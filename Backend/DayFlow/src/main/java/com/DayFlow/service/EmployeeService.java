@@ -8,6 +8,7 @@ import com.DayFlow.model.Role;
 import com.DayFlow.model.User;
 import com.DayFlow.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ public class EmployeeService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final LoginIdGeneratorService loginIdGenerator;
+    private final AttendanceService attendanceService;
 
     @Transactional(readOnly = true)
     public EmployeeListResponse listEmployees(String hrLoginId, String search) {
@@ -41,6 +43,24 @@ public class EmployeeService {
                 .toList();
 
         return new EmployeeListResponse(employees, employees.size());
+    }
+
+    @Transactional(readOnly = true)
+    public EmployeeSummaryResponse getEmployee(String actorLoginId, Long employeeId) {
+        User actor = userRepository.findByLoginIdWithCompany(actorLoginId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        User employee = userRepository.findById(employeeId)
+                .orElseThrow(() -> new IllegalArgumentException("Employee not found"));
+
+        if (actor.getRole() == Role.HR) {
+            if (!actor.getCompany().getId().equals(employee.getCompany().getId())) {
+                throw new IllegalArgumentException("Employee not found");
+            }
+        } else if (!actor.getId().equals(employee.getId())) {
+            throw new IllegalArgumentException("Access denied");
+        }
+
+        return toSummary(employee);
     }
 
     @Transactional
@@ -64,6 +84,8 @@ public class EmployeeService {
         );
 
         String tempPassword = generateTemporaryPassword();
+        String department = blankToNull(request.getDepartment());
+        String designation = blankToNull(request.getDesignation());
 
         User employee = User.builder()
                 .loginId(loginId)
@@ -72,6 +94,8 @@ public class EmployeeService {
                 .firstName(request.getFirstName().trim())
                 .lastName(request.getLastName().trim())
                 .phone(request.getPhone().trim())
+                .department(department)
+                .designation(designation)
                 .role(Role.EMPLOYEE)
                 .company(hrUser.getCompany())
                 .yearOfJoining(year)
@@ -95,6 +119,7 @@ public class EmployeeService {
     }
 
     private EmployeeSummaryResponse toSummary(User user) {
+        String status = attendanceService.statusForUserToday(user).name().toLowerCase();
         return EmployeeSummaryResponse.builder()
                 .id(user.getId())
                 .loginId(user.getLoginId())
@@ -103,11 +128,19 @@ public class EmployeeService {
                 .fullName(fullName(user))
                 .email(user.getEmail())
                 .phone(user.getPhone())
+                .department(user.getDepartment())
+                .designation(user.getDesignation())
+                .attendanceStatus(status)
                 .build();
     }
 
     private String fullName(User user) {
         return (user.getFirstName() + " " + user.getLastName()).trim();
+    }
+
+    private String blankToNull(String value) {
+        if (value == null || value.isBlank()) return null;
+        return value.trim();
     }
 
     private String generateTemporaryPassword() {

@@ -29,6 +29,14 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.listEmployees(userDetails.getUsername(), search));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<com.DayFlow.dto.EmployeeSummaryResponse> getEmployee(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        return ResponseEntity.ok(employeeService.getEmployee(userDetails.getUsername(), id));
+    }
+
     @PostMapping
     @PreAuthorize("hasRole('HR')")
     public ResponseEntity<CreateEmployeeResponse> createEmployee(

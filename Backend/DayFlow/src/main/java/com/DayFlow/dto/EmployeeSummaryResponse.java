@@ -13,4 +13,8 @@ public class EmployeeSummaryResponse {
     private String fullName;
     private String email;
     private String phone;
+    private String department;
+    private String designation;
+    /** present | absent | leave */
+    private String attendanceStatus;
 }

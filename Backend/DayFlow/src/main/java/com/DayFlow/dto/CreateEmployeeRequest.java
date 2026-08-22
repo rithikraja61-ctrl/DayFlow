@@ -18,4 +18,8 @@ public class CreateEmployeeRequest {
     @NotBlank
     @Pattern(regexp = "^\\d{10}$", message = "Phone must be 10 digits")
     private String phone;
+
+    private String department;
+
+    private String designation;
 }
