@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CreateEmployeeResponse {
+public class EmployeeSummaryResponse {
     private Long id;
     private String loginId;
     private String firstName;
@@ -13,6 +13,4 @@ public class CreateEmployeeResponse {
     private String fullName;
     private String email;
     private String phone;
-    private String temporaryPassword;
-    private String message;
 }
