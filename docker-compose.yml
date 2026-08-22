@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-rootpassword}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-dayflow}
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
@@ -35,7 +35,7 @@ services:
       JWT_SECRET: ${JWT_SECRET:-your-256-bit-secret-key-change-this-in-production-must-be-long}
       JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-3600000}
     ports:
-      - "8080:8080"
+      - "8088:8080"
 
   frontend:
     build:
