@@ -1,6 +1,7 @@
 export default function SplitLayout({
   children,
   footer,
+  showPanelLogo = false,
   heroTitle = 'Welcome to Dayflow',
   heroSubtitle = 'Your centralized HR platform for attendance, leave requests, and team management — built to keep every workday running smoothly.',
 }) {
@@ -24,7 +25,14 @@ export default function SplitLayout({
       </section>
       <section className="panel">
         <div className="panel-inner">
-          <div className="panel-body">{children}</div>
+          <div className="panel-body">
+            {showPanelLogo ? (
+              <div className="panel-logo-wrap">
+                <img src="/logo.svg" alt="DayFlow" className="panel-logo" />
+              </div>
+            ) : null}
+            {children}
+          </div>
           {footer ? <div className="panel-footer">{footer}</div> : <div className="panel-footer" />}
         </div>
       </section>
