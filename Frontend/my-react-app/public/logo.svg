@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 88" role="img" aria-label="DayFlow">
+  <defs>
+    <linearGradient id="figure" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#005A70" />
+      <stop offset="100%" stop-color="#0084FF" />
+    </linearGradient>
+  </defs>
+  <g fill="url(#figure)">
+    <circle cx="32" cy="22" r="9" />
+    <path d="M14 48c0-10 8-16 18-16s18 6 18 16v6H14v-6z" />
+    <circle cx="88" cy="22" r="9" />
+    <path d="M70 48c0-10 8-16 18-16s18 6 18 16v6H70v-6z" />
+    <circle cx="60" cy="18" r="11" />
+    <path d="M38 52c0-12 10-20 22-20s22 8 22 20v8H38v-8z" />
+  </g>
+  <path d="M18 68c22 12 62 12 84 0" fill="none" stroke="#005A70" stroke-width="3" stroke-linecap="round" />
+  <path d="M26 74c18 8 50 8 68 0" fill="none" stroke="#0077B6" stroke-width="2.5" stroke-linecap="round" />
+  <path d="M34 79c14 5 38 5 52 0" fill="none" stroke="#0084FF" stroke-width="2" stroke-linecap="round" />
+</svg>
