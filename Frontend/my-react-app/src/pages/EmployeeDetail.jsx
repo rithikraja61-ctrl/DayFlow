@@ -65,22 +65,21 @@ export default function EmployeeDetail() {
 
         <div className="detail-section">
           <h2>Personal</h2>
-          <p className="detail-hint">View only — employee information in human readable mode.</p>
+          <p className="detail-hint">View only — work profile. Private & salary info are not shown here.</p>
           <div className="detail-grid">
             <ReadOnlyField label="Employee ID" value={employee.loginId} />
             <ReadOnlyField label="Designation" value={employee.designation} />
             <ReadOnlyField label="Department" value={employee.department} />
             <ReadOnlyField label="Email" value={employee.email} />
             <ReadOnlyField label="Phone" value={employee.phone} />
-            <ReadOnlyField label="Role" value={employee.role} />
             <ReadOnlyField label="Join date" value={employee.joinDate} />
           </div>
         </div>
 
         <div className="detail-section">
           <ReadOnlyBlock label="About" value={employee.about} />
-          <ReadOnlyBlock label="What I love about my job…" value={employee.jobLove} />
-          <ReadOnlyBlock label="My skills and hobbies…" value={employee.hobbies} />
+          <ReadOnlyBlock label="What I love about my job" value={employee.jobLove} />
+          <ReadOnlyBlock label="My interests and hobbies" value={employee.hobbies} />
         </div>
 
         <div className="detail-section detail-two-col">
