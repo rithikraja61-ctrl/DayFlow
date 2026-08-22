@@ -1,14 +1,22 @@
-const USERS_KEY = 'dayflow_users'
 const SESSION_KEY = 'dayflow_session'
 
-const delay = () => new Promise((r) => setTimeout(r, 400))
+async function post(path, body) {
+  let res
+  try {
+    res = await fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+  } catch {
+    throw new Error('Cannot reach the server. Start the Spring Boot backend on port 8080.')
+  }
 
-function loadUsers() {
-  return JSON.parse(localStorage.getItem(USERS_KEY) || '[]')
-}
-
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users))
+  const data = await res.json().catch(() => ({}))
+  if (!res.ok) {
+    throw new Error(data.message || 'Request failed')
+  }
+  return data
 }
 
 export function getSession() {
@@ -16,40 +24,45 @@ export function getSession() {
   return raw ? JSON.parse(raw) : null
 }
 
-export async function registerHr({ email, password, name, organization }) {
-  await delay()
-  const users = loadUsers()
-  const normalized = email.toLowerCase()
-  if (users.some((u) => u.email === normalized)) {
-    throw new Error('An account with this email already exists')
-  }
-  users.push({
-    id: crypto.randomUUID(),
-    name: (name || email.split('@')[0]).trim(),
-    organization: (organization || 'Dayflow').trim(),
-    email: normalized,
-    password,
-    role: 'HR',
-  })
-  saveUsers(users)
-  return { ok: true, email: normalized }
+export function authHeaders() {
+  const session = getSession()
+  return session?.token ? { Authorization: `Bearer ${session.token}` } : {}
 }
 
-export async function login({ email, password, role }) {
-  await delay()
-  const user = loadUsers().find((u) => u.email === email.toLowerCase())
-  if (!user || user.password !== password) {
-    throw new Error('Invalid email or password')
+export async function registerHr(form) {
+  return post('/api/auth/signup', {
+    companyName: form.companyName.trim(),
+    firstName: form.firstName.trim(),
+    lastName: form.lastName.trim(),
+    email: form.email.trim(),
+    phone: form.phone.trim(),
+    password: form.password,
+    confirmPassword: form.confirmPassword,
+  })
+}
+
+export async function login({ loginIdOrEmail, password, role }) {
+  const data = await post('/api/auth/login', {
+    loginIdOrEmail: loginIdOrEmail.trim(),
+    password,
+  })
+
+  const expected = role === 'Employee' ? 'EMPLOYEE' : role === 'HR' ? 'HR' : null
+  if (expected && data.role !== expected) {
+    throw new Error(
+      expected === 'HR'
+        ? 'This account is not an HR account'
+        : 'This account is not an Employee account',
+    )
   }
-  if (role && user.role !== role) {
-    throw new Error(`This account is not an ${role} account`)
-  }
+
   const session = {
-    id: user.id,
-    name: user.name,
-    organization: user.organization || '',
-    email: user.email,
-    role: user.role,
+    token: data.token,
+    loginId: data.loginId,
+    email: data.email,
+    role: data.role,
+    companyName: data.companyName,
+    mustChangePassword: data.mustChangePassword,
   }
   localStorage.setItem(SESSION_KEY, JSON.stringify(session))
   return session

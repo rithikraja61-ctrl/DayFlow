@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom'
 import SplitLayout from '../layouts/SplitLayout'
 
-function LaptopIcon() {
+function EmployeeIcon() {
   return (
-    <svg width="26" height="22" viewBox="0 0 26 22" fill="none" aria-hidden="true">
-      <circle cx="13" cy="6.5" r="3.2" fill="#E8C39A" />
-      <path d="M8 14.5c1.2-2.4 3-3.4 5-3.4s3.8 1 5 3.4" stroke="#5e3e57" strokeWidth="1.6" strokeLinecap="round" />
-      <rect x="4" y="15" width="18" height="4.5" rx="1.2" fill="#8b6b86" />
-      <rect x="6.5" y="12.2" width="13" height="3.2" rx="0.6" fill="#c4a3be" />
+    <svg width="28" height="24" viewBox="0 0 28 24" fill="none" aria-hidden="true">
+      <circle cx="14" cy="6" r="3.4" fill="#E8C39A" />
+      <path d="M14 10.2c2.6 0 4.8 1.4 5.6 3.6H8.4c.8-2.2 3-3.6 5.6-3.6Z" fill="#F3D7B5" />
+      <rect x="5" y="16.2" width="18" height="5.2" rx="1.4" fill="#8B6B86" />
+      <rect x="8" y="13.6" width="12" height="3.4" rx="0.7" fill="#C4A3BE" />
     </svg>
   )
 }
@@ -15,12 +15,16 @@ function LaptopIcon() {
 function GearIcon() {
   return (
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="3.1" stroke="#8b6b86" strokeWidth="1.7" />
       <path
-        d="M12 3.5v2.2M12 18.3v2.2M3.5 12h2.2M18.3 12h2.2M6.1 6.1l1.5 1.5M16.4 16.4l1.5 1.5M17.9 6.1l-1.5 1.5M7.6 16.4l-1.5 1.5"
-        stroke="#8b6b86"
+        d="M12 15.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Z"
+        stroke="#8B6B86"
         strokeWidth="1.7"
-        strokeLinecap="round"
+      />
+      <path
+        d="M19.2 13.05c.05-.34.08-.7.08-1.05s-.03-.71-.08-1.05l2.02-1.58-1.9-3.3-2.4.96a7.3 7.3 0 0 0-1.82-1.05L14.7 3h-5.4l-.4 2.98c-.66.24-1.27.59-1.82 1.05l-2.4-.96-1.9 3.3 2.02 1.58c-.05.34-.08.7-.08 1.05s.03.71.08 1.05L3.18 14.6l1.9 3.3 2.4-.96c.55.46 1.16.81 1.82 1.05L9.3 21h5.4l.4-2.98c.66-.24 1.27-.59 1.82-1.05l2.4.96 1.9-3.3-2.02-1.58Z"
+        stroke="#8B6B86"
+        strokeWidth="1.5"
+        strokeLinejoin="round"
       />
     </svg>
   )
@@ -36,20 +40,20 @@ export default function Welcome() {
       <div className="role-list">
         <button type="button" className="role-card" onClick={() => navigate('/employee/login')}>
           <span className="role-icon">
-            <LaptopIcon />
+            <EmployeeIcon />
           </span>
-          <div>
+          <div className="role-copy">
             <strong>Employee Portal</strong>
-            <span>View attendance & request time-off</span>
+            <p>View attendance & request time-off</p>
           </div>
         </button>
         <button type="button" className="role-card" onClick={() => navigate('/hr')}>
           <span className="role-icon">
             <GearIcon />
           </span>
-          <div>
+          <div className="role-copy">
             <strong>HR / Admin</strong>
-            <span>Manage employees & approvals</span>
+            <p>Manage employees & approvals</p>
           </div>
         </button>
       </div>

@@ -4,8 +4,15 @@ export default function SplitLayout({ children, footer }) {
   return (
     <div className="split">
       <section className="hero">
+        <span className="circle circle-tl" />
+        <span className="circle circle-mid" />
+        <span className="circle circle-br" />
         <div className="hero-copy">
-          <h1>Every workday, perfectly aligned.</h1>
+          <h1>
+            Every workday,
+            <br />
+            perfectly aligned.
+          </h1>
           <p>Your all-in-one HR workspace.</p>
         </div>
       </section>
@@ -14,7 +21,7 @@ export default function SplitLayout({ children, footer }) {
           Dayflow
         </Link>
         <div className="panel-body">{children}</div>
-        {footer ? <div className="panel-footer">{footer}</div> : null}
+        {footer ? <div className="panel-footer">{footer}</div> : <div className="panel-footer" />}
       </section>
     </div>
   )
