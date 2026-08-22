@@ -1,27 +1,32 @@
-import { Link } from 'react-router-dom'
-
-export default function SplitLayout({ children, footer }) {
+export default function SplitLayout({
+  children,
+  footer,
+  heroTitle = 'Welcome to Dayflow',
+  heroSubtitle = 'Your centralized HR platform for attendance, leave requests, and team management — built to keep every workday running smoothly.',
+}) {
   return (
     <div className="split">
       <section className="hero">
         <span className="circle circle-tl" />
         <span className="circle circle-mid" />
         <span className="circle circle-br" />
+        <span className="circle circle-sm" />
         <div className="hero-copy">
-          <h1>
-            Every workday,
-            <br />
-            perfectly aligned.
-          </h1>
-          <p>Your all-in-one HR workspace.</p>
+          <p className="hero-brand">Dayflow</p>
+          <h1>{heroTitle}</h1>
+          <p className="hero-sub">{heroSubtitle}</p>
+          <ul className="hero-features">
+            <li>Real-time attendance tracking</li>
+            <li>Leave requests &amp; approvals</li>
+            <li>One workspace for HR &amp; teams</li>
+          </ul>
         </div>
       </section>
       <section className="panel">
-        <Link to="/" className="wordmark">
-          Dayflow
-        </Link>
-        <div className="panel-body">{children}</div>
-        {footer ? <div className="panel-footer">{footer}</div> : <div className="panel-footer" />}
+        <div className="panel-inner">
+          <div className="panel-body">{children}</div>
+          {footer ? <div className="panel-footer">{footer}</div> : <div className="panel-footer" />}
+        </div>
       </section>
     </div>
   )
