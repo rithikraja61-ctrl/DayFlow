@@ -7,7 +7,7 @@ function avatarInitials(employee) {
 
 export default function EmployeeCard({ employee }) {
   const navigate = useNavigate()
-  const status = EMPLOYEE_STATUS[employee.status]
+  const status = EMPLOYEE_STATUS[employee.status] ?? EMPLOYEE_STATUS.absent
 
   return (
     <button

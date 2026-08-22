@@ -30,6 +30,7 @@ export default function ProfileMenu({ session, onLogout }) {
         onClick={() => setOpen((v) => !v)}
       >
         {initials(session)}
+        <span className="profile-avatar-dot" aria-hidden="true" />
       </button>
       {open ? (
         <div className="profile-dropdown" role="menu">

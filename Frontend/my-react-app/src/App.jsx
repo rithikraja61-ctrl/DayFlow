@@ -5,7 +5,9 @@ import EmployeeLogin from './pages/EmployeeLogin'
 import HrPortal from './pages/HrPortal'
 import Dashboard from './pages/Dashboard'
 import EmployeeDetail from './pages/EmployeeDetail'
+import NewEmployee from './pages/NewEmployee'
 import Attendance from './pages/Attendance'
+import TimeOff from './pages/TimeOff'
 import Profile from './pages/Profile'
 
 export default function App() {
@@ -34,10 +36,26 @@ export default function App() {
           }
         />
         <Route
+          path="/employees/new"
+          element={
+            <ProtectedRoute>
+              <NewEmployee />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/attendance"
           element={
             <ProtectedRoute>
               <Attendance />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/time-off"
+          element={
+            <ProtectedRoute>
+              <TimeOff />
             </ProtectedRoute>
           }
         />

@@ -1,10 +1,9 @@
 export const EMPLOYEE_STATUS = {
-  present: { label: 'Logged in today', color: 'green' },
-  absent: { label: 'Not logged in', color: 'red' },
-  leave: { label: 'On leave', color: 'yellow' },
+  present: { label: 'Present', color: 'green' },
+  leave: { label: 'On leave', color: 'red' },
+  absent: { label: 'Absent', color: 'yellow' },
 }
 
-/** Sample data for UI when backend is offline */
 export const SAMPLE_EMPLOYEES = [
   {
     id: '1',
@@ -15,9 +14,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-ENG-2024-001',
     phone: '9876543210',
     role: 'Software Engineer',
+    designation: 'Software Engineer',
     status: 'present',
     joinDate: '12 Jan 2024',
     about: 'Full-stack developer focused on building reliable HR tools.',
+    jobLove: 'Solving complex workflow problems with clean code.',
+    hobbies: 'Reading, team mentoring, and UI design.',
+    workHistory: '3 years in product engineering.',
+    education: 'B.Tech Computer Science',
   },
   {
     id: '2',
@@ -28,9 +32,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-ENG-2024-002',
     phone: '9876543211',
     role: 'Frontend Developer',
+    designation: 'Frontend Developer',
     status: 'absent',
     joinDate: '03 Mar 2024',
     about: 'Creates clean interfaces and smooth user experiences.',
+    jobLove: 'Crafting pixel-perfect React components.',
+    hobbies: 'Photography and cycling.',
+    workHistory: '2 years frontend development.',
+    education: 'B.E Information Technology',
   },
   {
     id: '3',
@@ -41,9 +50,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-HR-2023-004',
     phone: '9876543212',
     role: 'HR Executive',
+    designation: 'HR Executive',
     status: 'present',
     joinDate: '18 Aug 2023',
     about: 'Handles onboarding, policies, and employee engagement.',
+    jobLove: 'Helping teams grow and feel supported.',
+    hobbies: 'Workshops and community volunteering.',
+    workHistory: '4 years in HR operations.',
+    education: 'MBA Human Resources',
   },
   {
     id: '4',
@@ -54,9 +68,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-FIN-2024-001',
     phone: '9876543213',
     role: 'Accounts Manager',
+    designation: 'Accounts Manager',
     status: 'leave',
     joinDate: '22 Feb 2024',
     about: 'Manages payroll processing and financial compliance.',
+    jobLove: 'Keeping numbers accurate and transparent.',
+    hobbies: 'Chess and finance podcasts.',
+    workHistory: '5 years in corporate finance.',
+    education: 'M.Com Finance',
   },
   {
     id: '5',
@@ -67,9 +86,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-DES-2024-001',
     phone: '9876543214',
     role: 'UI Designer',
+    designation: 'UI Designer',
     status: 'present',
     joinDate: '05 Jun 2024',
     about: 'Designs intuitive workflows for internal products.',
+    jobLove: 'Turning wireframes into delightful experiences.',
+    hobbies: 'Sketching and typography.',
+    workHistory: '2 years product design.',
+    education: 'B.Des Communication Design',
   },
   {
     id: '6',
@@ -80,9 +104,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-ENG-2023-008',
     phone: '9876543215',
     role: 'Backend Developer',
+    designation: 'Backend Developer',
     status: 'absent',
     joinDate: '14 Nov 2023',
     about: 'Builds secure APIs and database integrations.',
+    jobLove: 'Designing scalable backend systems.',
+    hobbies: 'Open source and coffee brewing.',
+    workHistory: '3 years backend engineering.',
+    education: 'B.Tech Software Engineering',
   },
   {
     id: '7',
@@ -93,9 +122,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-OPS-2024-002',
     phone: '9876543216',
     role: 'Operations Lead',
+    designation: 'Operations Lead',
     status: 'present',
     joinDate: '09 Apr 2024',
     about: 'Coordinates day-to-day operations across teams.',
+    jobLove: 'Making processes simple for everyone.',
+    hobbies: 'Travel planning and journaling.',
+    workHistory: '6 years operations management.',
+    education: 'MBA Operations',
   },
   {
     id: '8',
@@ -106,9 +140,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-SAL-2023-003',
     phone: '9876543217',
     role: 'Sales Executive',
+    designation: 'Sales Executive',
     status: 'leave',
     joinDate: '30 Jul 2023',
     about: 'Drives client relationships and product adoption.',
+    jobLove: 'Connecting clients with the right solutions.',
+    hobbies: 'Cricket and networking events.',
+    workHistory: '4 years B2B sales.',
+    education: 'BBA Marketing',
   },
   {
     id: '9',
@@ -119,9 +158,14 @@ export const SAMPLE_EMPLOYEES = [
     loginId: 'DF-MKT-2024-001',
     phone: '9876543218',
     role: 'Marketing Specialist',
+    designation: 'Marketing Specialist',
     status: 'present',
     joinDate: '17 Sep 2024',
     about: 'Plans campaigns and brand communication.',
+    jobLove: 'Storytelling that resonates with audiences.',
+    hobbies: 'Content writing and social media.',
+    workHistory: '2 years digital marketing.',
+    education: 'BA Mass Communication',
   },
 ]
 
@@ -134,13 +178,32 @@ export function toDashboardEmployee(row) {
     email: row.email,
     loginId: row.loginId,
     phone: row.phone ?? '—',
-    role: row.role ?? 'Employee',
+    role: row.role ?? row.designation ?? 'Employee',
+    designation: row.designation ?? row.role ?? 'Employee',
     status: row.attendanceStatus ?? row.status ?? 'absent',
     joinDate: row.joinDate ?? '—',
     about: row.about ?? 'No description available.',
+    jobLove: row.jobLove ?? '—',
+    hobbies: row.hobbies ?? '—',
+    workHistory: row.workHistory ?? '—',
+    education: row.education ?? '—',
   }
 }
 
 export function getEmployeeById(id, employees = SAMPLE_EMPLOYEES) {
   return employees.find((e) => e.id === String(id)) ?? null
+}
+
+export function filterEmployees(employees, query) {
+  const q = query.trim().toLowerCase()
+  if (!q) return employees
+  return employees.filter((e) => {
+    const name = `${e.firstName} ${e.lastName}`.toLowerCase()
+    return (
+      name.includes(q) ||
+      e.department.toLowerCase().includes(q) ||
+      e.email.toLowerCase().includes(q) ||
+      e.loginId.toLowerCase().includes(q)
+    )
+  })
 }

@@ -68,6 +68,96 @@
   border-bottom-color: var(--plum, #5e3e57);
 }
 
+.dash-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-left: auto;
+}
+
+.dash-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.dash-search-wrap svg {
+  position: absolute;
+  left: 12px;
+  color: var(--muted, #9a9a9a);
+  pointer-events: none;
+}
+
+.dash-search {
+  width: 220px;
+  height: 38px;
+  padding: 0 12px 0 36px;
+  border: 1px solid var(--border, #e5e5e5);
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--ink, #2b2b2b);
+  background: #fafafa;
+}
+
+.dash-search:focus {
+  outline: none;
+  border-color: #c4b0bf;
+  background: #fff;
+}
+
+.dash-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.clock-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.clock-btn {
+  height: 38px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.clock-in {
+  background: var(--plum, #5e3e57);
+  color: #fff;
+  border-color: var(--plum, #5e3e57);
+}
+
+.clock-in:hover:not(:disabled) {
+  background: var(--plum-deep, #4a3145);
+}
+
+.clock-out {
+  background: #fff;
+  color: var(--plum, #5e3e57);
+  border-color: #d8c9d4;
+}
+
+.clock-out:hover:not(:disabled) {
+  background: #f7f5f6;
+}
+
+.clock-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.clock-banner {
+  margin-bottom: 20px;
+}
+
 .dash-nav-soon {
   font-size: 15px;
   color: #c4c4c4;
@@ -149,10 +239,10 @@
 
 .profile-menu {
   position: relative;
-  margin-left: auto;
 }
 
 .profile-avatar {
+  position: relative;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -169,6 +259,17 @@
 
 .profile-avatar:hover {
   background: var(--plum-deep, #4a3145);
+}
+
+.profile-avatar-dot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--danger, #c81e1e);
+  border: 2px solid #fff;
 }
 
 .profile-dropdown {
@@ -260,6 +361,31 @@
   box-shadow: 0 4px 16px rgba(94, 62, 87, 0.1);
 }
 
+.new-employee-card {
+  border-style: dashed;
+  border-color: #d8c9d4;
+  background: #faf9fa;
+}
+
+.new-employee-card:hover {
+  border-color: var(--plum, #5e3e57);
+  background: #f7f5f6;
+}
+
+.new-employee-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px dashed #c4b0bf;
+  color: var(--plum, #5e3e57);
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .status-dot {
   position: absolute;
   top: 14px;
@@ -328,6 +454,77 @@
   border-radius: 14px;
   padding: 32px;
   max-width: 720px;
+}
+
+.detail-card-wide {
+  max-width: 900px;
+}
+
+.detail-block {
+  margin-bottom: 16px;
+}
+
+.detail-block:last-child {
+  margin-bottom: 0;
+}
+
+.detail-two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.profile-header-fields {
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border, #e5e5e5);
+}
+
+.profile-tabs-wrap {
+  margin-top: 8px;
+}
+
+.profile-tabs {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--border, #e5e5e5);
+  margin-bottom: 24px;
+}
+
+.profile-tabs button {
+  background: none;
+  border: 0;
+  padding: 0 0 12px;
+  font-size: 15px;
+  color: var(--muted, #9a9a9a);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.profile-tabs button:hover {
+  color: var(--ink, #2b2b2b);
+}
+
+.profile-tabs button.active {
+  color: var(--plum, #5e3e57);
+  font-weight: 600;
+  border-bottom-color: var(--plum, #5e3e57);
+}
+
+.profile-tab-content {
+  min-height: 120px;
+}
+
+.detail-card input:disabled {
+  width: 100%;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border, #e5e5e5);
+  border-radius: 8px;
+  font-size: 15px;
+  background: #f9f8f9;
+  color: var(--muted, #9a9a9a);
 }
 
 .detail-header {
@@ -484,6 +681,30 @@
     flex-wrap: wrap;
     padding: 14px 20px;
     gap: 16px;
+  }
+
+  .dash-header-actions {
+    width: 100%;
+    order: 2;
+    justify-content: flex-end;
+  }
+
+  .dash-search {
+    width: 100%;
+    flex: 1;
+  }
+
+  .dash-search-wrap {
+    flex: 1;
+  }
+
+  .dash-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .detail-two-col {
+    grid-template-columns: 1fr;
   }
 
   .dash-nav {

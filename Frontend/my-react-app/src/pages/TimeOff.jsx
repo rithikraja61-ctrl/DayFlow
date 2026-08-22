@@ -1,15 +1,15 @@
 import { Link } from 'react-router-dom'
 import DashboardLayout from '../layouts/DashboardLayout'
 
-export default function Attendance() {
+export default function TimeOff() {
   return (
     <DashboardLayout>
       <div className="dash-page-head">
-        <h1>Attendance</h1>
-        <p>Track clock-in history and daily attendance records.</p>
+        <h1>Time Off</h1>
+        <p>Request and manage leave from this page.</p>
       </div>
       <div className="attendance-placeholder">
-        <p>Attendance reports and history will appear here once the backend is connected.</p>
+        <p>Time off requests and approvals will be built in the next stage.</p>
         <Link to="/dashboard" className="detail-back">
           ← Back to Dashboard
         </Link>

@@ -1,16 +1,8 @@
 import { Link, useParams } from 'react-router-dom'
 import DashboardLayout from '../layouts/DashboardLayout'
+import { ReadOnlyBlock, ReadOnlyField } from '../components/ReadOnlyField'
 import { EMPLOYEE_STATUS, getEmployeeById } from '../data/mockEmployees'
 import { useEmployees } from '../hooks/useEmployees'
-
-function Field({ label, value }) {
-  return (
-    <div className="detail-field">
-      <span className="detail-label">{label}</span>
-      <span className="detail-value">{value || '—'}</span>
-    </div>
-  )
-}
 
 export default function EmployeeDetail() {
   const { id } = useParams()
@@ -61,34 +53,39 @@ export default function EmployeeDetail() {
         ← Back to Dashboard
       </Link>
 
-      <div className="detail-card">
+      <div className="detail-card detail-card-wide">
         <div className="detail-header">
           <span className="detail-avatar">{initials}</span>
           <div className="detail-header-copy">
             <h1>{fullName}</h1>
-            <p>{employee.role}</p>
+            <p>{employee.designation}</p>
             <span className={`detail-status status-${status.color}`}>{status.label}</span>
           </div>
         </div>
 
         <div className="detail-section">
-          <h2>Work information</h2>
-          <p className="detail-hint">
-            View only — work details for HR. Private info and salary info are not shown.
-          </p>
+          <h2>Personal</h2>
+          <p className="detail-hint">View only — employee information in human readable mode.</p>
           <div className="detail-grid">
-            <Field label="Employee ID" value={employee.loginId} />
-            <Field label="Department" value={employee.department} />
-            <Field label="Work email" value={employee.email} />
-            <Field label="Phone" value={employee.phone} />
-            <Field label="Role" value={employee.role} />
-            <Field label="Join date" value={employee.joinDate} />
+            <ReadOnlyField label="Employee ID" value={employee.loginId} />
+            <ReadOnlyField label="Designation" value={employee.designation} />
+            <ReadOnlyField label="Department" value={employee.department} />
+            <ReadOnlyField label="Email" value={employee.email} />
+            <ReadOnlyField label="Phone" value={employee.phone} />
+            <ReadOnlyField label="Role" value={employee.role} />
+            <ReadOnlyField label="Join date" value={employee.joinDate} />
           </div>
         </div>
 
         <div className="detail-section">
-          <h2>About</h2>
-          <p className="detail-about">{employee.about}</p>
+          <ReadOnlyBlock label="About" value={employee.about} />
+          <ReadOnlyBlock label="What I love about my job…" value={employee.jobLove} />
+          <ReadOnlyBlock label="My skills and hobbies…" value={employee.hobbies} />
+        </div>
+
+        <div className="detail-section detail-two-col">
+          <ReadOnlyBlock label="Work" value={employee.workHistory} />
+          <ReadOnlyBlock label="Education" value={employee.education} />
         </div>
       </div>
     </DashboardLayout>
