@@ -229,8 +229,15 @@
 
 .employee-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+}
+
+.dev-sample-banner {
+  margin-bottom: 20px;
+  background: #f7f5f6;
+  color: #5e3e57;
+  border: 1px solid #e5d5e0;
 }
 
 .employee-card {
@@ -487,6 +494,10 @@
 
   .dash-main {
     padding: 20px;
+  }
+
+  .employee-grid {
+    grid-template-columns: 1fr;
   }
 
   .detail-grid {

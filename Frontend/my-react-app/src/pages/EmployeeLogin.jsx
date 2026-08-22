@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import SplitLayout from '../layouts/SplitLayout'
 import Input from '../components/Input'
+import PasswordInput from '../components/PasswordInput'
 import { login } from '../api/auth'
 import { validateLoginId } from '../utils/validation'
 
@@ -53,16 +54,15 @@ export default function EmployeeLogin() {
           error={errors.loginIdOrEmail}
           onChange={(e) => setForm((f) => ({ ...f, loginIdOrEmail: e.target.value }))}
         />
-        <Input
+        <PasswordInput
           label="Password"
-          type="password"
           placeholder="••••••••"
           value={form.password}
           error={errors.password}
           onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
         />
-        <button className="primary" disabled={loading}>
-          {loading ? 'Signing in…' : 'Log in'}
+        <button className="primary sign-in-btn" disabled={loading}>
+          {loading ? 'Signing in…' : 'SIGN IN'}
         </button>
       </form>
     </SplitLayout>

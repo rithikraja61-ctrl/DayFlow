@@ -71,3 +71,29 @@ export async function login({ loginIdOrEmail, password, role }) {
 export function logout() {
   localStorage.removeItem(SESSION_KEY)
 }
+
+const COMPANY_LOGO_KEY = 'dayflow_company_logo'
+
+export function saveCompanyLogo(previewUrl) {
+  if (previewUrl) localStorage.setItem(COMPANY_LOGO_KEY, previewUrl)
+}
+
+export function getCompanyLogo() {
+  return localStorage.getItem(COMPANY_LOGO_KEY)
+}
+
+/** Dev only — lets you open dashboard UI while backend is offline */
+export function startDevUiSession() {
+  if (!import.meta.env.DEV) return null
+  const session = {
+    token: 'dev-ui-token',
+    loginId: 'DF-HR-DEV',
+    email: 'hr.dev@dayflow.com',
+    role: 'HR',
+    companyName: 'DayFlow Demo',
+    mustChangePassword: false,
+    devUi: true,
+  }
+  localStorage.setItem(SESSION_KEY, JSON.stringify(session))
+  return session
+}

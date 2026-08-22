@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { getSession } from '../api/auth'
-import { listEmployees } from '../api/employees'
 import DashboardLayout from '../layouts/DashboardLayout'
-import { EMPLOYEE_STATUS, getEmployeeById, toDashboardEmployee } from '../data/mockEmployees'
+import { EMPLOYEE_STATUS, getEmployeeById } from '../data/mockEmployees'
+import { useEmployees } from '../hooks/useEmployees'
 
 function Field({ label, value }) {
   return (
@@ -16,46 +14,14 @@ function Field({ label, value }) {
 
 export default function EmployeeDetail() {
   const { id } = useParams()
-  const session = getSession()
-  const [employee, setEmployee] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { employees, loading, isHr } = useEmployees()
+  const employee = getEmployeeById(id, employees)
 
-  useEffect(() => {
-    if (session?.role !== 'HR') {
-      setLoading(false)
-      return
-    }
-
-    let cancelled = false
-    setLoading(true)
-    setError('')
-
-    listEmployees()
-      .then((rows) => {
-        if (!cancelled) {
-          const mapped = rows.map(toDashboardEmployee)
-          setEmployee(getEmployeeById(id, mapped))
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message)
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [id, session?.role])
-
-  if (session?.role !== 'HR') {
+  if (!isHr) {
     return (
       <DashboardLayout>
         <div className="detail-missing">
           <h1>Access restricted</h1>
-          <p className="dash-muted">Only HR can view employee profiles from the dashboard.</p>
           <Link to="/dashboard" className="detail-back">
             ← Back to Dashboard
           </Link>
@@ -68,17 +34,6 @@ export default function EmployeeDetail() {
     return (
       <DashboardLayout>
         <p className="dash-muted">Loading employee…</p>
-      </DashboardLayout>
-    )
-  }
-
-  if (error) {
-    return (
-      <DashboardLayout>
-        <div className="banner">{error}</div>
-        <Link to="/dashboard" className="detail-back">
-          ← Back to Dashboard
-        </Link>
       </DashboardLayout>
     )
   }
@@ -119,8 +74,7 @@ export default function EmployeeDetail() {
         <div className="detail-section">
           <h2>Work information</h2>
           <p className="detail-hint">
-            View only — work details for HR. Private info and salary info are not shown on this
-            screen.
+            View only — work details for HR. Private info and salary info are not shown.
           </p>
           <div className="detail-grid">
             <Field label="Employee ID" value={employee.loginId} />

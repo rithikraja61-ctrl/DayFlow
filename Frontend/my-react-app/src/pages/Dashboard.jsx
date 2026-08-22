@@ -1,45 +1,12 @@
-import { useEffect, useState } from 'react'
-import { getSession } from '../api/auth'
-import { listEmployees } from '../api/employees'
 import DashboardLayout from '../layouts/DashboardLayout'
 import EmployeeCard from '../components/EmployeeCard'
-import { EMPLOYEE_STATUS, toDashboardEmployee } from '../data/mockEmployees'
+import { EMPLOYEE_STATUS } from '../data/mockEmployees'
+import { useEmployees } from '../hooks/useEmployees'
 
 export default function Dashboard() {
-  const session = getSession()
-  const [employees, setEmployees] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { employees, loading, usingSample, isHr } = useEmployees()
 
-  useEffect(() => {
-    if (session?.role !== 'HR') {
-      setLoading(false)
-      return
-    }
-
-    let cancelled = false
-    setLoading(true)
-    setError('')
-
-    listEmployees()
-      .then((rows) => {
-        if (!cancelled) {
-          setEmployees(rows.map(toDashboardEmployee))
-        }
-      })
-      .catch((err) => {
-        if (!cancelled) setError(err.message)
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [session?.role])
-
-  if (session?.role !== 'HR') {
+  if (!isHr) {
     return (
       <DashboardLayout>
         <div className="dash-page-head">
@@ -53,9 +20,15 @@ export default function Dashboard() {
   return (
     <DashboardLayout>
       <div className="dash-page-head">
-        <h1>Team overview</h1>
-        <p>Click an employee card to view work details. Private and salary info are not shown here.</p>
+        <h1>DayFlow</h1>
+        <p>Click an employee card to view work details. Private and salary info are not shown.</p>
       </div>
+
+      {usingSample ? (
+        <div className="banner dev-sample-banner">
+          Showing sample team data — connect backend for live employees.
+        </div>
+      ) : null}
 
       <ul className="status-legend" aria-label="Attendance status legend">
         {Object.entries(EMPLOYEE_STATUS).map(([key, { label, color }]) => (
@@ -67,18 +40,17 @@ export default function Dashboard() {
       </ul>
 
       {loading ? <p className="dash-muted">Loading employees…</p> : null}
-      {error ? <div className="banner">{error}</div> : null}
 
-      {!loading && !error ? (
-        employees.length ? (
-          <div className="employee-grid">
-            {employees.map((employee) => (
-              <EmployeeCard key={employee.id} employee={employee} />
-            ))}
-          </div>
-        ) : (
-          <p className="dash-muted">No employees yet. Create employees from HR admin after backend is set up.</p>
-        )
+      {!loading && employees.length ? (
+        <div className="employee-grid">
+          {employees.map((employee) => (
+            <EmployeeCard key={employee.id} employee={employee} />
+          ))}
+        </div>
+      ) : null}
+
+      {!loading && !employees.length ? (
+        <p className="dash-muted">No employees yet.</p>
       ) : null}
     </DashboardLayout>
   )

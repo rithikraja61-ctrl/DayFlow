@@ -317,6 +317,105 @@ input:focus {
   border-color: #c4b0bf;
 }
 
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrap input {
+  padding-right: 44px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #9a9a9a;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.password-toggle:hover {
+  color: #5e3e57;
+  background: #f7f5f6;
+}
+
+.logo-upload-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.logo-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px dashed #c4b0bf;
+  border-radius: 8px;
+  background: #faf9fa;
+  color: #5e3e57;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logo-upload-btn:hover {
+  border-color: #5e3e57;
+  background: #f7f5f6;
+}
+
+.logo-upload-preview {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+}
+
+.logo-upload-hint {
+  font-size: 13px;
+  color: #9a9a9a;
+}
+
+.logo-upload-input {
+  display: none;
+}
+
+.sign-in-btn {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 14px;
+}
+
+.dev-ui-link {
+  display: block;
+  width: 100%;
+  margin-top: 14px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #5e3e57;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.dev-ui-link:hover {
+  color: #4a3145;
+}
+
 input.invalid {
   border-color: #c81e1e;
 }

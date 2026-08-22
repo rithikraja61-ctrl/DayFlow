@@ -1,8 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import SplitLayout from '../layouts/SplitLayout'
 import Input from '../components/Input'
-import { login, registerHr } from '../api/auth'
+import PasswordInput from '../components/PasswordInput'
+import LogoUpload from '../components/LogoUpload'
+import { login, registerHr, saveCompanyLogo, startDevUiSession } from '../api/auth'
 import {
   passwordChecks,
   validateConfirm,
@@ -29,6 +31,8 @@ export default function HrPortal() {
   const [tab, setTab] = useState(location.pathname === '/hr/new' ? 'signup' : 'login')
   const [loginForm, setLoginForm] = useState({ loginIdOrEmail: '', password: '' })
   const [signupForm, setSignupForm] = useState(emptySignup)
+  const [companyLogo, setCompanyLogo] = useState(null)
+  const [logoError, setLogoError] = useState('')
   const [errors, setErrors] = useState({})
   const [banner, setBanner] = useState('')
   const [success, setSuccess] = useState('')
@@ -40,6 +44,12 @@ export default function HrPortal() {
     setBanner('')
     setSuccess('')
     setErrors({})
+    setLogoError('')
+  }
+
+  function openDevDashboard() {
+    startDevUiSession()
+    navigate('/dashboard')
   }
 
   async function onLogin(e) {
@@ -78,7 +88,12 @@ export default function HrPortal() {
     setErrors(next)
     setBanner('')
     setSuccess('')
+    setLogoError('')
     if (Object.values(next).some(Boolean)) return
+
+    if (companyLogo?.preview) {
+      saveCompanyLogo(companyLogo.preview)
+    }
 
     setLoading(true)
     try {
@@ -87,11 +102,17 @@ export default function HrPortal() {
       setTab('login')
       setLoginForm((f) => ({ ...f, loginIdOrEmail: created.email || signupForm.email, password: '' }))
       setSignupForm(emptySignup)
+      setCompanyLogo(null)
     } catch (err) {
       setBanner(err.message)
     } finally {
       setLoading(false)
     }
+  }
+
+  function handleLogoChange(value, err) {
+    setCompanyLogo(value)
+    setLogoError(err ?? '')
   }
 
   return (
@@ -106,7 +127,7 @@ export default function HrPortal() {
       <h1 className="panel-title">Admin Portal</h1>
       <div className="auth-tabs">
         <button type="button" className={tab === 'login' ? 'active' : ''} onClick={() => switchTab('login')}>
-          Log in
+          Sign in
         </button>
         <button type="button" className={tab === 'signup' ? 'active' : ''} onClick={() => switchTab('signup')}>
           Sign up
@@ -124,17 +145,21 @@ export default function HrPortal() {
             error={errors.loginIdOrEmail}
             onChange={(e) => setLoginForm((f) => ({ ...f, loginIdOrEmail: e.target.value }))}
           />
-          <Input
+          <PasswordInput
             label="Password"
-            type="password"
             placeholder="••••••••"
             value={loginForm.password}
             error={errors.password}
             onChange={(e) => setLoginForm((f) => ({ ...f, password: e.target.value }))}
           />
-          <button className="primary" disabled={loading}>
-            {loading ? 'Please wait…' : 'Log in'}
+          <button className="primary sign-in-btn" disabled={loading}>
+            {loading ? 'Please wait…' : 'SIGN IN'}
           </button>
+          {import.meta.env.DEV && banner ? (
+            <button type="button" className="dev-ui-link" onClick={openDevDashboard}>
+              Open dashboard UI (backend offline)
+            </button>
+          ) : null}
         </form>
       ) : (
         <form onSubmit={onSignup} noValidate>
@@ -144,6 +169,7 @@ export default function HrPortal() {
             error={errors.companyName}
             onChange={(e) => setSignupForm((f) => ({ ...f, companyName: e.target.value }))}
           />
+          <LogoUpload value={companyLogo} onChange={handleLogoChange} error={logoError} />
           <Input
             label="First name"
             value={signupForm.firstName}
@@ -171,9 +197,8 @@ export default function HrPortal() {
             error={errors.phone}
             onChange={(e) => setSignupForm((f) => ({ ...f, phone: e.target.value }))}
           />
-          <Input
+          <PasswordInput
             label="Password"
-            type="password"
             value={signupForm.password}
             error={errors.password}
             onChange={(e) => setSignupForm((f) => ({ ...f, password: e.target.value }))}
@@ -184,14 +209,13 @@ export default function HrPortal() {
             <li className={checks.lower ? 'ok' : ''}>Lowercase</li>
             <li className={checks.special ? 'ok' : ''}>Special (!@#$%^&*)</li>
           </ul>
-          <Input
+          <PasswordInput
             label="Confirm password"
-            type="password"
             value={signupForm.confirmPassword}
             error={errors.confirmPassword}
             onChange={(e) => setSignupForm((f) => ({ ...f, confirmPassword: e.target.value }))}
           />
-          <button className="primary" disabled={loading}>
+          <button className="primary sign-in-btn" disabled={loading}>
             {loading ? 'Please wait…' : 'Sign up'}
           </button>
         </form>
