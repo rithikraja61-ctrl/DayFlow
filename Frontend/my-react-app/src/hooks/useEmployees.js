@@ -9,6 +9,11 @@ export function useEmployees() {
   const [loading, setLoading] = useState(session?.role === 'HR')
   const [error, setError] = useState('')
   const [usingSample, setUsingSample] = useState(false)
+  const [tick, setTick] = useState(0)
+
+  function reload() {
+    setTick((t) => t + 1)
+  }
 
   useEffect(() => {
     if (session?.role !== 'HR') {
@@ -19,18 +24,26 @@ export function useEmployees() {
     let cancelled = false
     setLoading(true)
     setError('')
-    setUsingSample(false)
+
+    if (session?.devUi) {
+      setEmployees(SAMPLE_EMPLOYEES)
+      setUsingSample(true)
+      setLoading(false)
+      return
+    }
 
     listEmployees()
       .then((rows) => {
         if (!cancelled) {
           setEmployees(rows.map(toDashboardEmployee))
+          setUsingSample(false)
         }
       })
-      .catch(() => {
+      .catch((err) => {
         if (!cancelled) {
           setEmployees(SAMPLE_EMPLOYEES)
           setUsingSample(true)
+          setError(err.message)
         }
       })
       .finally(() => {
@@ -40,7 +53,14 @@ export function useEmployees() {
     return () => {
       cancelled = true
     }
-  }, [session?.role])
+  }, [session?.role, session?.devUi, tick])
 
-  return { employees, loading, error, usingSample, isHr: session?.role === 'HR' }
+  return {
+    employees,
+    loading,
+    error,
+    usingSample,
+    isHr: session?.role === 'HR',
+    reload,
+  }
 }

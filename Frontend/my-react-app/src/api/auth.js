@@ -9,12 +9,14 @@ async function post(path, body) {
       body: JSON.stringify(body),
     })
   } catch {
-    throw new Error('Cannot reach the server. Start the Spring Boot backend on port 8080.')
+    throw new Error('Cannot reach the server. Start Docker (port 8088) or Spring Boot backend.')
   }
 
   const data = await res.json().catch(() => ({}))
   if (!res.ok) {
-    throw new Error(data.message || 'Request failed')
+    throw new Error(
+      data.message || data.error || (res.status === 400 ? 'Invalid Login Id or Password' : `Request failed (${res.status})`),
+    )
   }
   return data
 }
@@ -51,8 +53,8 @@ export async function login({ loginIdOrEmail, password, role }) {
   if (expected && data.role !== expected) {
     throw new Error(
       expected === 'HR'
-        ? 'This account is not an HR account'
-        : 'This account is not an Employee account',
+        ? 'This email is registered as Employee. Use Employee Portal, or sign up a new HR account.'
+        : 'This email is registered as HR. Use the HR / Admin portal to sign in.',
     )
   }
 
@@ -62,7 +64,7 @@ export async function login({ loginIdOrEmail, password, role }) {
     email: data.email,
     role: data.role,
     companyName: data.companyName,
-    mustChangePassword: data.mustChangePassword,
+    mustChangePassword: Boolean(data.mustChangePassword),
   }
   localStorage.setItem(SESSION_KEY, JSON.stringify(session))
   return session
@@ -82,7 +84,7 @@ export function getCompanyLogo() {
   return localStorage.getItem(COMPANY_LOGO_KEY)
 }
 
-/** Dev only — lets you open dashboard UI while backend is offline */
+/** Dev only — open dashboard UI while backend is offline */
 export function startDevUiSession() {
   if (!import.meta.env.DEV) return null
   const session = {

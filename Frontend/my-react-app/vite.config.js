@@ -6,7 +6,8 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',
+        // Docker Compose maps backend to host port 8088 (see docker-compose.yml)
+        target: 'http://localhost:8088',
         changeOrigin: true,
       },
     },
