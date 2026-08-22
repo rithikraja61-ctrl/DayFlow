@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import SplitLayout from '../layouts/SplitLayout'
 import Input from '../components/Input'
 import { login } from '../api/auth'
 import { validateLoginId } from '../utils/validation'
 
 export default function EmployeeLogin() {
+  const navigate = useNavigate()
   const [form, setForm] = useState({ loginIdOrEmail: '', password: '' })
   const [errors, setErrors] = useState({})
   const [banner, setBanner] = useState('')
-  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
 
   async function onSubmit(e) {
@@ -20,13 +20,12 @@ export default function EmployeeLogin() {
     }
     setErrors(next)
     setBanner('')
-    setSuccess('')
     if (next.loginIdOrEmail || next.password) return
 
     setLoading(true)
     try {
-      const session = await login({ ...form, role: 'Employee' })
-      setSuccess(`Signed in as ${session.email} (${session.loginId})`)
+      await login({ ...form, role: 'Employee' })
+      navigate('/dashboard')
     } catch (err) {
       setBanner(err.message)
     } finally {
@@ -46,7 +45,6 @@ export default function EmployeeLogin() {
       <h1 className="panel-title">Employee Portal</h1>
       <p className="panel-sub">Sign in with your company email or login ID</p>
       {banner ? <div className="banner">{banner}</div> : null}
-      {success ? <div className="banner success">{success}</div> : null}
       <form onSubmit={onSubmit} noValidate>
         <Input
           label="Login ID or email"

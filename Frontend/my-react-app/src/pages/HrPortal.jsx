@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import SplitLayout from '../layouts/SplitLayout'
 import Input from '../components/Input'
 import { login, registerHr } from '../api/auth'
@@ -24,6 +24,7 @@ const emptySignup = {
 }
 
 export default function HrPortal() {
+  const navigate = useNavigate()
   const location = useLocation()
   const [tab, setTab] = useState(location.pathname === '/hr/new' ? 'signup' : 'login')
   const [loginForm, setLoginForm] = useState({ loginIdOrEmail: '', password: '' })
@@ -54,8 +55,8 @@ export default function HrPortal() {
 
     setLoading(true)
     try {
-      const session = await login({ ...loginForm, role: 'HR' })
-      setSuccess(`Signed in as ${session.email} (${session.loginId})`)
+      await login({ ...loginForm, role: 'HR' })
+      navigate('/dashboard')
     } catch (err) {
       setBanner(err.message)
     } finally {
