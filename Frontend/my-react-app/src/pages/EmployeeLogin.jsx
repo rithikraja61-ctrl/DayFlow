@@ -36,6 +36,7 @@ export default function EmployeeLogin() {
 
   return (
     <SplitLayout
+      showPanelLogo
       footer={
         <Link className="back-link" to="/">
           ← Back to Role Selection
